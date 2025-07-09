@@ -13,11 +13,11 @@ nix-shell -p neofetch --run neofetch
 git clone https://github.com/matesssaks/dotfiles ~/.dotfiles
 # Install Nix-darwin
 sudo nix run nix-darwin/master#darwin-rebuild --extra-experimental-features "nix-command flakes" -- switch --flake ~/.dotfiles/darwin#default
-#Close and reopen terminal
+# Close and reopen terminal
 ```
 
 ## Updating
 ```bash
 git -C ~/.dotfiles pull
-darwin-rebuild switch --flake ~/.dotfiles/darwin#default
+sudo darwin-rebuild switch --flake ~/.dotfiles/darwin#default
 ```
