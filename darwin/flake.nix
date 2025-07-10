@@ -9,7 +9,7 @@
 
 	outputs = inputs@{ self, nix-darwin, nixpkgs }:
 	let
-		configuration = { pkgs, ... }: {
+		configuration = { pkgs, config, ... }: {
 			# Packages installed in system profile
 			environment.systemPackages =
 			[
@@ -17,6 +17,7 @@
 				pkgs.neovim
 				pkgs.firefox
 				pkgs.kitty
+				pkgs.mkalias
 			];
 
 			# Enable flakes
@@ -34,6 +35,23 @@
 
 			# The platform configuration
 			nixpkgs.hostPlatform = "aarch64-darwin";
+
+			# Make apps show up in spotlight
+			system.activationScripts.applications.text = let
+				env = pkgs.buildEnv {
+					name = "system-applications";
+					paths = config.environment.systemPackages;
+					pathsToLink = "/Applications";
+				};
+			in
+				pkgs.lib.mkForce ''
+					rm -rf /Applications/Nix\ Apps
+					mkdir -p /Applications/Nix\ Apps
+					find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + | while read -r src; do
+						app_name=$(basename "$src")
+						${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
+					done
+				'';
 		};
 	in {
 		darwinConfigurations."default" = nix-darwin.lib.darwinSystem {
