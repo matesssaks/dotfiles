@@ -12,7 +12,7 @@ nix-shell -p neofetch --run neofetch
 # Clone dotfiles repository
 git clone https://github.com/matesssaks/dotfiles ~/.dotfiles
 # Install Nix-darwin
-sudo nix run nix-darwin/master#darwin-rebuild --extra-experimental-features "nix-command flakes" -- switch --flake ~/.dotfiles/darwin#default
+sudo nix run nix-darwin/nix-darwin-25.05#darwin-rebuild --extra-experimental-features "nix-command flakes" -- switch --flake ~/.dotfiles/darwin#default
 # Close and reopen terminal
 ```
 
