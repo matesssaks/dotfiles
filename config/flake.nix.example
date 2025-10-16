@@ -1,0 +1,7 @@
+{
+	description = "Local user config";
+
+	outputs = { self }: {
+		username = "john";
+	};
+}
